@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Create a Taiga issue
+      taiga_issue: project="ansible_test_01" name="New taiga issue" issue_type="Bug"

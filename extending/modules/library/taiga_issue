@@ -1,0 +1,65 @@
+#!/usr/bin/python
+
+from os import getenv
+from taiga import TaigaAPI
+from taiga.exceptions import TaigaException
+
+def create_issue(module, project_name, issue_name, issue_priority, issue_status, issue_type, issue_severity, issue_description):
+
+    api = TaigaAPI()
+    token = getenv('TAIGA_TOKEN')
+    if token:
+        api.auth(token=token)
+    else:
+        username = getenv('TAIGA_USERNAME')
+        password = getenv('TAIGA_PASSWORD')
+        if not any([username, password]):
+            module.fail_json(msg="Missing credentials")
+        api.auth(username=username, password=password)
+
+    user_id = api.me().id
+    project = [project for project in api.projects.list(member=user_id) if project.name == project_name][0]
+    project_id = project.id
+    priority_id = [priority.id for priority in api.priorities.list(project=project_id) if priority.name == issue_priority][0]
+    status_id = [status.id for status in api.issue_statuses.list(project=project_id) if status.name == issue_status][0]
+    type_id = [type_.id for type_ in project.list_issue_types() if type_.name == issue_type][0]
+    severity_id = [severity.id for severity in project.list_severities() if severity.name == issue_severity][0]
+    new_issue = project.add_issue(issue_name, priority_id, status_id, type_id, severity_id, description=issue_description)
+
+def main():
+    module = AnsibleModule(
+        argument_spec=dict(
+            project=dict(required=True),
+            name=dict(required=True),
+            issue_type=dict(required=True),
+            priority=dict(required=False, default="Normal"),
+            status=dict(required=False, default="New"),
+            severity=dict(required=False, default="Normal"),
+            description=dict(required=False, default=""),
+        ),
+        supports_check_mode=True
+    )
+
+    # In check mode, we take no action
+    # Since this module never changes system state, we just
+    # return changed=False
+    if module.check_mode:
+        module.exit_json(changed=False)
+
+    project_name = module.params['project']
+    issue_name = module.params['name']
+    issue_priority = module.params['priority']
+    issue_status = module.params['status']
+    issue_type = module.params['issue_type']
+    issue_severity = module.params['severity']
+    issue_description = module.params['description']
+
+    try:
+        create_issue(module, project_name, issue_name, issue_priority, issue_status, issue_type, issue_severity, issue_description)
+        module.exit_json(changed=True)
+    except TaigaException:
+        msg = "An exception happend: %s" % sys.exc_info()[0]
+        module.fail_json(msg=msg)
+
+from ansible.module_utils.basic import *
+main()
