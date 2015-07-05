@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  tasks:
+    - name: This is a simulation message
+      debug: msg="The hostname is {{ ec2_hostname }} and the ami_id is {{ ec2_ami_id }}"
