@@ -1,0 +1,34 @@
+---
+- hosts: web
+  sudo: yes
+  vars:
+      - external_port: 80
+      - internal_port: 8000
+
+  tasks:
+
+      - name: Add the apt repository for nginx
+        apt_repository: repo="ppa:nginx/stable" update_cache=yes
+
+      - name: Install nginx
+        apt: name=nginx state=present
+
+      - name: Ensure that nginx is started
+        service: name=nginx state=started
+
+      - name: Remove default site
+        file: path=/etc/nginx/sites-enabled/default state=absent
+        notify:
+            - Restart nginx
+
+      - name: Configure a site
+        template: src=templates/site.j2 dest=/etc/nginx/sites-available/site
+
+      - name: Enable a site
+        file: src=/etc/nginx/sites-available/site dest=/etc/nginx/sites-enabled/site state=link
+        notify:
+            - Restart nginx
+
+  handlers:
+      - name: Restart nginx
+        service: name=nginx state=restarted
