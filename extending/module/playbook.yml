@@ -1,0 +1,28 @@
+---
+- hosts: localhost
+  tasks:
+
+    - name: Create a Taiga issue
+      taiga_issue:
+        project: YOUR_PROJECT
+        subject: Bug report from {{ ansible_hostname }}
+        issue_type: Bug
+        priority: High
+        status: New
+        description: I'm running {{ ansible_distribution }}. I attach the logs
+        attachment: playbook.yml
+        attachment_description: This is the playbook
+        tags:
+          - ansible test
+          - dummy
+        state: present
+
+    - name: Pause so that you can verify that the issue is open
+      pause: minutes=1
+
+    - name: Delete the Taiga issue
+      taiga_issue:
+        project: YOUR_PROJECT
+        subject: Bug report from {{ ansible_hostname }}
+        issue_type: Bug
+        state: absent
