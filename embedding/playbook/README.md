@@ -1,6 +1,6 @@
 # EC2 provisioner
 
-This example demonstrates how to embed a call to an Ansible playbook. The file `ec2_provisioner.py` defines a function named `provision_ec2_instance` that takes 2 parameters (`ec2_hostname`and `ec2_ami_id`) and runs a playbook named `provision_ec2_intance.yml` passing along the variables as host variables.
+This example shows how to embed a call to an Ansible playbook. The file `ec2_provisioner.py` defines a function named `provision_ec2_instance` that takes 2 parameters (`ec2_hostname`and `ec2_ami_id`) and runs a playbook named `provision_ec2_intance.yml` passing along the variables as host variables.
 
 The playbook is just a mock: instead of creating the EC2 instance, it just displays a message with the values of the `ec2_hostname` and `ec2_ami_id` passed to the function.
 
