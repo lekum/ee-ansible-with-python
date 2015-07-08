@@ -1,0 +1,5 @@
+---
+- hosts: localhost
+  tasks:
+    - name: Fail miserably
+      fail: msg="I'm so sorry :-("
