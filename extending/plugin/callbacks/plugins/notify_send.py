@@ -6,12 +6,10 @@ def notify_send(title, message, icon):
 class CallbackModule(object):
 
     def runner_on_failed(self, host, res, ignore_errors=False):
-        notify_send(
-                    "ANSIBLE FAILURE",
-                    "Host: %s\nModule: %s\nMessage: %s" % (
-                                                           host,
-                                                           res.get('invocation').get('module_name'),
-                                                           res.get('msg')
-                                                          ),
-                    "dialog-warning"
-                   )
+        template = "Host: {}\nModule: {}\nMessage: {}"
+        notification = template.format(
+                                       host,
+                                       res.get('invocation').get('module_name'),
+                                       res.get('msg')
+                                      )
+        notify_send("ANSIBLE FAILURE", notification, "dialog-warning")
