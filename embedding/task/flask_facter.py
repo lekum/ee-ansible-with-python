@@ -26,7 +26,7 @@ class AnsibleFactResource(Resource):
 
     def get(self, fact_name):
         """
-        Returns a fist-level fact (not nested)
+        Returns a top-level fact (not nested)
         """
         self.get_local_facts()
         try:
