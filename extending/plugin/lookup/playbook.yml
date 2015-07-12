@@ -2,7 +2,7 @@
 - hosts: localhost
   vars:
     book: "{{ lookup('shelvefile', 'file=book.db key=current_book') }}"
-    page: "{{ lookup('shelvefile', 'file=book.db key=current_book_page') | int }}"
+    page: "{{ lookup('shelvefile', 'file=book.db key=current_book_page') }}"
 
   tasks:
     - name: Print my current reading
