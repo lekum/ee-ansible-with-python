@@ -1,9 +1,10 @@
 ---
 - hosts: localhost
   vars:
-    book: "{{ lookup('shelvefile', 'file=book.db key=current_book') }}"
+    book: "{{ lookup('shelvefile', 'file=book.db key=current_book_name') }}"
     page: "{{ lookup('shelvefile', 'file=book.db key=current_book_page') }}"
+    author: "{{ lookup('shelvefile', 'file=book.db key=current_book_author') }}"
 
   tasks:
     - name: Print my current reading
-      debug: msg="I'm on page {{ page }} of '{{ book }}'"
+      debug: msg="I'm on page {{ page }} of '{{ book }}' by {{ author }}"
