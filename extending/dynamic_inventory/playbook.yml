@@ -1,0 +1,8 @@
+---
+- hosts: web1
+  tasks:
+    - name: Print my host name
+      debug: msg="Hi, my name is {{ ansible_hostname }}"
+
+    - name: Print my webserver details
+      debug: msg="I'm running {{ engine }} version {{ engine_version }}"
