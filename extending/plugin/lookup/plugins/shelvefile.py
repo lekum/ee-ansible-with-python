@@ -1,3 +1,20 @@
+# (c) 2015, Alejandro Guirao <lekumberri@gmail.com>
+#
+# This file is part of Ansible
+#
+# Ansible is free software: you can redistribute it and/or modify
+# it under the terms of the GNU General Public License as published by
+# the Free Software Foundation, either version 3 of the License, or
+# (at your option) any later version.
+#
+# Ansible is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with Ansible.  If not, see <http://www.gnu.org/licenses/>.
+
 import shelve
 import os
 from ansible import utils, errors
@@ -9,7 +26,7 @@ class LookupModule(object):
 
     def read_shelve(self, shelve_filename, key):
         """
-        Read a value from a shelve file
+        Read the value of "key" from a shelve file
         """
         d = shelve.open(shelve_filename)
         res = d.get(key, None)
@@ -52,10 +69,13 @@ class LookupModule(object):
 
             for path in (basedir_path, relative_path, playbook_path):
                 if path and os.path.exists(path):
+                    res = self.read_shelve(path, key)
+                    if res is None:
+                        raise errors.AnsibleError("Key %s not found in shelve file %s" % (key, file))
                     # Convert the value read to string
-                    ret.append(str(self.read_shelve(path, key)))
+                    ret.append(str(res))
                     break
             else:
-                raise errors.AnsibleError("Could not locate file in lookup: %s" % file)
+                raise errors.AnsibleError("Could not locate shelve file in lookup: %s" % file)
 
         return ret
