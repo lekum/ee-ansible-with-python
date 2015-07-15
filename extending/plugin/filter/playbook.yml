@@ -3,10 +3,9 @@
   vars:
     roman_name: Caesar
   tasks:
-    - set_fact: roman_encoded={{ roman_name | rot13 }}
 
     - name: Perform a rot13
-      debug: msg="The word {{ roman_name }} becomes {{ roman_encoded }}"
+      debug: msg="The word {{ roman_name }} becomes {{ roman_name | rot13 }}"
 
     - name: Perform another rot13
-      debug: msg="And {{ roman_encoded }} becomes {{ roman_encoded | rot13 }}"
+      debug: msg="And {{ roman_name | rot13 }} becomes {{ roman_name | rot13 | rot13 }}"
