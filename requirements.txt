@@ -1,4 +1,4 @@
 Flask
 Flask-RESTful
-ansible
+ansible>=1.9,<=2.0
 python-taiga
