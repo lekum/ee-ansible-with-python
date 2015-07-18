@@ -1,5 +1,8 @@
 ---
 - hosts: localhost
   tasks:
+    - name: Debug message
+      debug: msg="This task goes OK"
+
     - name: Fail miserably
       fail: msg="I'm so sorry :-("
