@@ -1,4 +1,4 @@
-# Extending and Embedding Ansible with Python
+# Embedding and Extending Ansible with Python
 
 Support material for the talk (code samples). The material is valid for Ansible v.1.9, probably won't fully work with v.2 as the Python API and plugins interface will be different.
 
