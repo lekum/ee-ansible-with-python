@@ -101,10 +101,10 @@ EXAMPLES = '''
     issue_type: Bug
     priority: High
     status: New
-    severity: High
+    severity: Important
     description: An error has been found. Please check the attached error log for details.
     attachment: /path/to/error.log
-    attachment_description: Error log
+    attachment_description: Error log file
     tags:
       - Error
       - Needs manual check
@@ -308,4 +308,5 @@ def main():
 
 
 from ansible.module_utils.basic import *
-main()
+if __name__ == '__main__':
+    main()
